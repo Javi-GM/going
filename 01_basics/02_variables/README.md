@@ -49,7 +49,7 @@ Go initializes variables with "zero values" when declared without an explicit in
 ### Variable Scope
 
 - Variables declared inside a function are local to that function
-- Variables declared outside any function are package-level variables
+- Variables declared outside any function are **package-level** variables
 - Variables declared within blocks (like if statements) are scoped to that block
 
 ### Constants
