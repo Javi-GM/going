@@ -33,8 +33,13 @@ func TestFloatingTypes(t *testing.T) {
 	float32Val, float64Val := FloatingTypes()
 	
 	// Test that float32 has less precision than float64
-	const float32Test = 0.1234567890123456789
-	if float32(float32Test) == float32Test {
+	const precisionTest = 0.1234567890123456789
+	
+	// Convert to float32 and back to float64 to demonstrate precision loss
+	float32Converted := float64(float32(precisionTest))
+	
+	// This should be true because float32 loses precision
+	if float32Converted == precisionTest {
 		t.Error("float32 should not have full precision of a long decimal")
 	}
 	
