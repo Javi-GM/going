@@ -24,22 +24,38 @@ func TestCheckNumber(t *testing.T) {
 
 func TestGradeScore(t *testing.T) {
 	testCases := []struct {
-		score    int
-		expected string
+		score         int
+		expected      string
+		expectError   bool
 	}{
-		{95, "A"},
-		{85, "B"},
-		{75, "C"},
-		{65, "D"},
-		{55, "F"},
-		{100, "A"},
-		{50, "F"},
-		{0, "F"},
+		{95, "A", false},
+		{85, "B", false},
+		{75, "C", false},
+		{65, "D", false},
+		{55, "F", false},
+		{100, "A", false},
+		{50, "F", false},
+		{0, "F", false},
+		{101, "", true},  // Invalid score, should return error
+		{-1, "", true},   // Invalid score, should return error
 	}
 	
 	for _, tc := range testCases {
-		result := GradeScore(tc.score)
-		if result != tc.expected {
+		result, err := GradeScore(tc.score)
+		
+		// Check error handling
+		if tc.expectError && err == nil {
+			t.Errorf("GradeScore(%d) expected an error but got nil", tc.score)
+			continue
+		}
+		
+		if !tc.expectError && err != nil {
+			t.Errorf("GradeScore(%d) returned unexpected error: %v", tc.score, err)
+			continue
+		}
+		
+		// Only check result when no error is expected
+		if !tc.expectError && result != tc.expected {
 			t.Errorf("GradeScore(%d) = %s; want %s", tc.score, result, tc.expected)
 		}
 	}
@@ -50,11 +66,11 @@ func TestCheckEvenOdd(t *testing.T) {
 		num      int
 		expected string
 	}{
-		{2, "even"},
-		{7, "odd"},
-		{0, "even"},
-		{-1, "odd"},
-		{-4, "even"},
+		{2, "EVEN"},
+		{7, "ODD"},
+		{0, "EVEN"},
+		{-1, "ODD"},
+		{-4, "EVEN"},
 	}
 	
 	for _, tc := range testCases {
